@@ -1,0 +1,963 @@
+{
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Glog.AI",
+          "organization": "Glog.AI",
+          "fullName": "Glog, Making software more secure",
+          "version": "1.0.0",
+          "semanticVersion": "1.0.0",
+          "informationUri": "https://www.glog.ai",
+          "rules": [
+            {
+              "id": "glog-84821b3b-e947-4ba1-9d57-de7d4f8db67d",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. `malloc` is a function that dynamically allocates memory at runtime. The vulnerability arises when the size of the memory to be allocated is not properly validated or calculated, leading to buffer overflow, memory corruption, or other related issues.\n\nIn the given code snippet, `malloc(DIM * sizeof(float))`, the vulnerability could arise if the value of `DIM` is not properly validated or controlled. If `DIM` is a very large value, it could lead to a buffer overflow or memory exhaustion. If `DIM` is a negative value, it could lead to memory corruption.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always validate and control the size of the memory to be allocated. Ensure that the value of `DIM` is within a safe range before passing it to `malloc`. Also, always check the return value of `malloc` to ensure that the memory allocation was successful.\n\n## Source Code Fix Recommendation\n\nHere is a recommended fix for the code:\n\n```cpp\n#include <stdlib.h>\n\n#define MAX_DIM 1000000 // Define a maximum safe value for DIM\n\n// ...\n\nint DIM = /* some value */;\nif (DIM < 0 || DIM > MAX_DIM) {\n    // Handle error: DIM is out of range\n} else {\n    float* array = (float*) malloc(DIM * sizeof(float));\n    if (array == NULL) {\n        // Handle error: malloc failed\n    } else {\n        // Use array...\n        free(array); // Don't forget to free the memory when you're done\n    }\n}\n```\n\n## Library Dependencies\n\nThe code example requires the `stdlib.h` library for the `malloc` and `free` functions.\n\n## OWASP Resources\n\n- [OWASP C/C++ Vulnerability Guide](https://owasp.org/www-pdf-archive/OWASP_SCP_Quick_Reference_Guide_v2.pdf)\n\n## Common Weakness Enumeration (CWE)\n\n- [CWE-131: Incorrect Calculation of Buffer Size](https://cwe.mitre.org/data/definitions/131.html)\n- [CWE-680: Integer Overflow to Buffer Overflow](https://cwe.mitre.org/data/definitions/680.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-d0b5ecd4-4d8c-4546-a42a-bfa59c8d9de6",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. `malloc` is a function that dynamically allocates memory at runtime. The vulnerability arises when the size of the memory to be allocated is not properly validated or calculated, leading to buffer overflow, memory corruption, or other related issues.\n\nIn the given code snippet, `malloc(DIM * sizeof(float))`, the vulnerability could arise if the value of `DIM` is not properly validated or controlled. If `DIM` is a very large value, it could lead to a buffer overflow or memory exhaustion. If `DIM` is a negative value, it could lead to memory corruption.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always validate and control the size of the memory to be allocated. Ensure that the value of `DIM` is within a safe range before passing it to `malloc`. Also, always check the return value of `malloc` to ensure that the memory allocation was successful.\n\n## Source Code Fix Recommendation\n\nHere is a recommended fix for the code:\n\n```cpp\n#include <stdlib.h>\n\n#define MAX_DIM 1000000 // Define a maximum safe value for DIM\n\n// ...\n\nint DIM = /* some value */;\nif (DIM < 0 || DIM > MAX_DIM) {\n    // Handle error: DIM is out of range\n} else {\n    float* array = (float*) malloc(DIM * sizeof(float));\n    if (array == NULL) {\n        // Handle error: malloc failed\n    } else {\n        // Use array...\n        free(array); // Don't forget to free the memory when you're done\n    }\n}\n```\n\n## Library Dependencies\n\nThe code example requires the `stdlib.h` library for the `malloc` and `free` functions.\n\n## OWASP Resources\n\n- [OWASP C/C++ Vulnerability Guide](https://owasp.org/www-pdf-archive/OWASP_SCP_Quick_Reference_Guide_v2.pdf)\n\n## Common Weakness Enumeration (CWE)\n\n- [CWE-131: Incorrect Calculation of Buffer Size](https://cwe.mitre.org/data/definitions/131.html)\n- [CWE-680: Integer Overflow to Buffer Overflow](https://cwe.mitre.org/data/definitions/680.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-7b88d4fe-8ce9-47f8-816a-ebf5fc1850af",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. This function is used to dynamically allocate memory at runtime. The issue arises when the size of the memory to be allocated is not properly calculated or validated, leading to potential buffer overflows, memory corruption, or other undefined behaviors. In the provided code snippet, the size of the memory to be allocated is calculated as `DIM * sizeof(float *)`. If `DIM` is not properly validated, it could lead to the allocation of an unexpected amount of memory, causing the aforementioned issues.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to:\n\n1. Always validate the size of the memory to be allocated. Ensure that it is within the expected range and does not lead to excessive memory allocation.\n2. Use functions that limit the amount of memory allocated, such as `calloc`, which initializes the allocated memory to zero.\n3. Consider using modern C++ features such as smart pointers (`std::unique_ptr`, `std::shared_ptr`) which automatically manage memory and help prevent memory-related issues.\n\n## Source Code Fix Recommendation\n\nHere is a recommended fix for the provided code snippet:\n\n```cpp\n#include <cstdlib> // for malloc and free\n#include <climits> // for INT_MAX\n\n#define DIM 100 // or any other value\n\n// Check if the size calculation would overflow\nif (DIM > INT_MAX / sizeof(float *)) {\n    // Handle error\n} else {\n    float **array = (float **)malloc(DIM * sizeof(float *));\n    if (array == NULL) {\n        // Handle error\n    } else {\n        // Use array\n        // ...\n\n        // Don't forget to free the memory\n        free(array);\n    }\n}\n```\n\n## Library Dependencies\n\nThe code example requires the following library dependencies:\n\n- `<cstdlib>`: This header file is required for the `malloc` and `free` functions.\n- `<climits>`: This header file is required for the `INT_MAX` constant.\n\n## References\n\n- [CWE-131: Incorrect Calculation of Buffer Size](https://cwe.mitre.org/data/definitions/131.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-47e4975d-aa4f-4cd1-b3d3-5953c1273c4d",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `strlen` function in C++ is used to find the length of a string. However, it can lead to vulnerabilities if not used properly. The function counts the number of characters in a string up to but not including the first null character. If the string is not null-terminated, `strlen` will continue reading memory until it encounters a null character, potentially leading to buffer overflows, memory corruption, and other undefined behavior.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, always ensure that your strings are null-terminated. Avoid using `strlen` on strings that may not be null-terminated. Instead, consider using safer alternatives that take the size of the buffer as an argument, such as `strnlen`.\n\n## Source Code Fix Recommendation\n\nInstead of using `strlen(\"global\")`, consider using `sizeof(\"global\") - 1`. The `sizeof` operator returns the size of the string including the null character, so subtracting 1 gives the length of the string.\n\n```cpp\n#include <iostream>\n\nint main() {\n    const char* str = \"global\";\n    size_t len = sizeof(str) - 1;\n    std::cout << \"Length of string is \" << len << std::endl;\n    return 0;\n}\n```\n\n## Library Dependencies\n\nThe code example requires the following library dependencies:\n\n- iostream\n\n## References\n\n- [OWASP C++ Secure Coding Practices](https://cheatsheetseries.owasp.org/cheatsheets/C-Based_Toolchain_Hardening_Cheat_Sheet.html)\n- [CWE-126: Buffer Over-read](https://cwe.mitre.org/data/definitions/126.html)\n\nPlease note that the links provided are active and accessible to anonymous users at the time of writing."
+              },
+              "properties": {
+                "tags": [
+                  "DS140021"
+                ]
+              }
+            },
+            {
+              "id": "glog-c7cb93b6-a289-4efb-892c-eaba4ae260f0",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `strlen` function in C and C++ is used to find the length of a string. However, it can lead to vulnerabilities if not used properly. The function counts the number of characters in a string until it reaches a null character (`\\0`). If the string is not properly null-terminated, `strlen` can continue reading past the intended boundary, leading to buffer over-read, which can cause crashes, information leaks, or potentially code execution.\n\nIn the provided code snippet `strlen(\"heap\")`, there is no direct vulnerability as the string is a string literal which is automatically null-terminated by the compiler. However, if the string was user input or read from an untrusted source, it could potentially not be null-terminated and lead to a vulnerability.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, always ensure that strings are properly null-terminated before passing them to `strlen`. If the string is user input or from an untrusted source, consider using safer alternatives such as `strnlen`, which takes a maximum length parameter and will not read past this length, even if it does not encounter a null character.\n\n## Source Code Fix Recommendation\n\nIf the string `\"heap\"` was replaced with a user-provided string, the code could be fixed as follows:\n\n```cpp\n#include <string.h>\n\nchar user_input[256];\n// ... (code to read user input into user_input)\nuser_input[sizeof(user_input) - 1] = '\\0'; // Ensure null-termination\nsize_t length = strlen(user_input);\n```\n\n## Library Dependencies\n\nThe `strlen` function is part of the C standard library, so no additional libraries are needed to use it.\n\n## References\n\n- [OWASP C/C++ Vulnerabilities](https://owasp.org/www-pdf-archive/OWASP_SCP_Quick_Reference_Guide_v2.pdf)\n- [CWE-126: Buffer Over-read](https://cwe.mitre.org/data/definitions/126.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS140021"
+                ]
+              }
+            },
+            {
+              "id": "glog-24eb09ab-8133-45e8-9af0-eed9fd46b333",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `strlen` function in C++ is used to find the length of a string. However, it can lead to vulnerabilities if not used properly. The function counts the number of characters in a string up to but not including the first null character. If the string is not null-terminated, `strlen` will continue reading memory until it encounters a null character, potentially leading to buffer overflows, memory corruption, and other undefined behavior.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, always ensure that your strings are null-terminated. Avoid using `strlen` on strings that may not be null-terminated. Instead, consider using safer alternatives that take the size of the buffer as an argument, such as `strnlen`.\n\n## Source Code Fix Recommendation\n\nInstead of using `strlen(\"global\")`, consider using `sizeof(\"global\") - 1`. The `sizeof` operator returns the size of the string including the null character, so subtracting 1 gives the length of the string.\n\n```cpp\n#include <iostream>\n\nint main() {\n    const char* str = \"global\";\n    size_t len = sizeof(str) - 1;\n    std::cout << \"Length of string is \" << len << std::endl;\n    return 0;\n}\n```\n\n## Library Dependencies\n\nThe code example requires the following library dependencies:\n\n- iostream\n\n## References\n\n- [OWASP C++ Secure Coding Practices](https://cheatsheetseries.owasp.org/cheatsheets/C-Based_Toolchain_Hardening_Cheat_Sheet.html)\n- [CWE-126: Buffer Over-read](https://cwe.mitre.org/data/definitions/126.html)\n\nPlease note that the links provided are active and accessible to anonymous users at the time of writing."
+              },
+              "properties": {
+                "tags": [
+                  "DS140021"
+                ]
+              }
+            },
+            {
+              "id": "glog-a9f2611f-adbb-466f-9e6f-d975b70ab0d1",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `strlen` function in C and C++ is used to find the length of a string. However, it can lead to vulnerabilities if not used properly. The function counts the number of characters in a string until it reaches a null character (`\\0`). If the string is not properly null-terminated, `strlen` can continue reading past the intended boundary, leading to buffer over-read, which can cause crashes, information leaks, or potentially code execution.\n\nIn the provided code snippet `strlen(\"heap\")`, there is no direct vulnerability as the string is a string literal which is automatically null-terminated by the compiler. However, if the string was user input or read from an untrusted source, it could potentially not be null-terminated and lead to a vulnerability.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, always ensure that strings are properly null-terminated before passing them to `strlen`. If the string is user input or from an untrusted source, consider using safer alternatives such as `strnlen`, which takes a maximum length parameter and will not read past this length, even if it does not encounter a null character.\n\n## Source Code Fix Recommendation\n\nIf the string `\"heap\"` was replaced with a user-provided string, the code could be fixed as follows:\n\n```cpp\n#include <string.h>\n\nchar user_input[256];\n// ... (code to read user input into user_input)\nuser_input[sizeof(user_input) - 1] = '\\0'; // Ensure null-termination\nsize_t length = strlen(user_input);\n```\n\n## Library Dependencies\n\nThe `strlen` function is part of the C standard library, so no additional libraries are needed to use it.\n\n## References\n\n- [OWASP C/C++ Vulnerabilities](https://owasp.org/www-pdf-archive/OWASP_SCP_Quick_Reference_Guide_v2.pdf)\n- [CWE-126: Buffer Over-read](https://cwe.mitre.org/data/definitions/126.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS140021"
+                ]
+              }
+            },
+            {
+              "id": "glog-31be831f-4a16-4c58-bfae-3a5060d2d8ed",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `strlen` function in C++ is used to find the length of a string. However, it can lead to vulnerabilities if not used properly. The function counts the number of characters in a string up to but not including the first null character. If the string is not null-terminated, `strlen` will continue reading memory until it encounters a null character, potentially leading to buffer overflows, memory corruption, and other undefined behavior.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, always ensure that your strings are null-terminated. Avoid using `strlen` on strings that may not be null-terminated. Instead, consider using safer alternatives that take the size of the buffer as an argument, such as `strnlen`.\n\n## Source Code Fix Recommendation\n\nInstead of using `strlen(\"global\")`, consider using `sizeof(\"global\") - 1`. The `sizeof` operator returns the size of the string including the null character, so subtracting 1 gives the length of the string.\n\n```cpp\n#include <iostream>\n\nint main() {\n    const char* str = \"global\";\n    size_t len = sizeof(str) - 1;\n    std::cout << \"Length of string is \" << len << std::endl;\n    return 0;\n}\n```\n\n## Library Dependencies\n\nThe code example requires the following library dependencies:\n\n- iostream\n\n## References\n\n- [OWASP C++ Secure Coding Practices](https://cheatsheetseries.owasp.org/cheatsheets/C-Based_Toolchain_Hardening_Cheat_Sheet.html)\n- [CWE-126: Buffer Over-read](https://cwe.mitre.org/data/definitions/126.html)\n\nPlease note that the links provided are active and accessible to anonymous users at the time of writing."
+              },
+              "properties": {
+                "tags": [
+                  "DS140021"
+                ]
+              }
+            },
+            {
+              "id": "glog-d0a1f3b7-4f80-4732-8249-0638849745e2",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `strlen` function in C and C++ is used to find the length of a string. However, it can lead to vulnerabilities if not used properly. The function counts the number of characters in a string until it reaches a null character (`\\0`). If the string is not properly null-terminated, `strlen` can continue reading past the intended boundary, leading to buffer over-read, which can cause crashes, information leaks, or potentially code execution.\n\nIn the provided code snippet `strlen(\"heap\")`, there is no direct vulnerability as the string is a string literal which is automatically null-terminated by the compiler. However, if the string was user input or read from an untrusted source, it could potentially not be null-terminated and lead to a vulnerability.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, always ensure that strings are properly null-terminated before passing them to `strlen`. If the string is user input or from an untrusted source, consider using safer alternatives such as `strnlen`, which takes a maximum length parameter and will not read past this length, even if it does not encounter a null character.\n\n## Source Code Fix Recommendation\n\nIf the string `\"heap\"` was replaced with a user-provided string, the code could be fixed as follows:\n\n```cpp\n#include <string.h>\n\nchar user_input[256];\n// ... (code to read user input into user_input)\nuser_input[sizeof(user_input) - 1] = '\\0'; // Ensure null-termination\nsize_t length = strlen(user_input);\n```\n\n## Library Dependencies\n\nThe `strlen` function is part of the C standard library, so no additional libraries are needed to use it.\n\n## References\n\n- [OWASP C/C++ Vulnerabilities](https://owasp.org/www-pdf-archive/OWASP_SCP_Quick_Reference_Guide_v2.pdf)\n- [CWE-126: Buffer Over-read](https://cwe.mitre.org/data/definitions/126.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS140021"
+                ]
+              }
+            },
+            {
+              "id": "glog-a0d6f842-e6a1-4955-a649-bbcb93db58a1",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `strlen` function in C++ is used to find the length of a string. However, it can lead to vulnerabilities if not used properly. The function counts the number of characters in a string up to but not including the first null character. If the string is not null-terminated, `strlen` will continue reading memory until it encounters a null character, potentially leading to buffer overflows, memory corruption, and other undefined behavior.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, always ensure that your strings are null-terminated. Avoid using `strlen` on strings that may not be null-terminated. Instead, consider using safer alternatives that take the size of the buffer as an argument, such as `strnlen`.\n\n## Source Code Fix Recommendation\n\nInstead of using `strlen(\"global\")`, consider using `sizeof(\"global\") - 1`. The `sizeof` operator returns the size of the string including the null character, so subtracting 1 gives the length of the string.\n\n```cpp\n#include <iostream>\n\nint main() {\n    const char* str = \"global\";\n    size_t len = sizeof(str) - 1;\n    std::cout << \"Length of string is \" << len << std::endl;\n    return 0;\n}\n```\n\n## Library Dependencies\n\nThe code example requires the following library dependencies:\n\n- iostream\n\n## References\n\n- [OWASP C++ Secure Coding Practices](https://cheatsheetseries.owasp.org/cheatsheets/C-Based_Toolchain_Hardening_Cheat_Sheet.html)\n- [CWE-126: Buffer Over-read](https://cwe.mitre.org/data/definitions/126.html)\n\nPlease note that the links provided are active and accessible to anonymous users at the time of writing."
+              },
+              "properties": {
+                "tags": [
+                  "DS140021"
+                ]
+              }
+            }
+          ],
+          "language": "en-US",
+          "contents": [
+            "localizedData",
+            "nonLocalizedData"
+          ],
+          "isComprehensive": false
+        }
+      },
+      "language": "en-US",
+      "results": [
+        {
+          "ruleId": "glog-84821b3b-e947-4ba1-9d57-de7d4f8db67d",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "util/osu_util_mpi.c"
+                },
+                "region": {
+                  "startLine": 1533,
+                  "startColumn": 17,
+                  "endLine": 1533,
+                  "endColumn": 43,
+                  "charOffset": 50561,
+                  "charLength": 26,
+                  "snippet": {
+                    "text": "malloc(DIM * sizeof(float)",
+                    "rendered": {
+                      "text": "malloc(DIM * sizeof(float)",
+                      "markdown": "`malloc(DIM * sizeof(float)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "util/osu_util_mpi.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 50561,
+                        "charLength": 26
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-d0b5ecd4-4d8c-4546-a42a-bfa59c8d9de6",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "util/osu_util_mpi.c"
+                },
+                "region": {
+                  "startLine": 1530,
+                  "startColumn": 24,
+                  "endLine": 1530,
+                  "endColumn": 50,
+                  "charOffset": 50508,
+                  "charLength": 26,
+                  "snippet": {
+                    "text": "malloc(DIM * sizeof(float)",
+                    "rendered": {
+                      "text": "malloc(DIM * sizeof(float)",
+                      "markdown": "`malloc(DIM * sizeof(float)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "util/osu_util_mpi.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 50508,
+                        "charLength": 26
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-7b88d4fe-8ce9-47f8-816a-ebf5fc1850af",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "util/osu_util_mpi.c"
+                },
+                "region": {
+                  "startLine": 1527,
+                  "startColumn": 18,
+                  "endLine": 1527,
+                  "endColumn": 46,
+                  "charOffset": 50420,
+                  "charLength": 28,
+                  "snippet": {
+                    "text": "malloc(DIM * sizeof(float *)",
+                    "rendered": {
+                      "text": "malloc(DIM * sizeof(float *)",
+                      "markdown": "`malloc(DIM * sizeof(float *)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "util/osu_util_mpi.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 50420,
+                        "charLength": 28
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-47e4975d-aa4f-4cd1-b3d3-5953c1273c4d",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (strlen)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "openshmem/osu_oshm_put_nb.c"
+                },
+                "region": {
+                  "startLine": 60,
+                  "startColumn": 46,
+                  "endLine": 60,
+                  "endColumn": 62,
+                  "charOffset": 1368,
+                  "charLength": 16,
+                  "snippet": {
+                    "text": "strlen(\"global\")",
+                    "rendered": {
+                      "text": "strlen(\"global\")",
+                      "markdown": "`strlen(\"global\")`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_put_nb.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1368,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "strlen_s(\"global\", <size of \"global\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_put_nb.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1368,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "strnlen(\"global\", <size of \"global\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-c7cb93b6-a289-4efb-892c-eaba4ae260f0",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (strlen)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "openshmem/osu_oshm_put_nb.c"
+                },
+                "region": {
+                  "startLine": 58,
+                  "startColumn": 37,
+                  "endLine": 58,
+                  "endColumn": 51,
+                  "charOffset": 1282,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "strlen(\"heap\")",
+                    "rendered": {
+                      "text": "strlen(\"heap\")",
+                      "markdown": "`strlen(\"heap\")`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_put_nb.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1282,
+                        "charLength": 14
+                      },
+                      "insertedContent": {
+                        "text": "strlen_s(\"heap\", <size of \"heap\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_put_nb.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1282,
+                        "charLength": 14
+                      },
+                      "insertedContent": {
+                        "text": "strnlen(\"heap\", <size of \"heap\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-24eb09ab-8133-45e8-9af0-eed9fd46b333",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (strlen)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "openshmem/osu_oshm_get_nb.c"
+                },
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 46,
+                  "endLine": 61,
+                  "endColumn": 62,
+                  "charOffset": 1364,
+                  "charLength": 16,
+                  "snippet": {
+                    "text": "strlen(\"global\")",
+                    "rendered": {
+                      "text": "strlen(\"global\")",
+                      "markdown": "`strlen(\"global\")`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_get_nb.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1364,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "strlen_s(\"global\", <size of \"global\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_get_nb.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1364,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "strnlen(\"global\", <size of \"global\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-a9f2611f-adbb-466f-9e6f-d975b70ab0d1",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (strlen)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "openshmem/osu_oshm_get_nb.c"
+                },
+                "region": {
+                  "startLine": 59,
+                  "startColumn": 37,
+                  "endLine": 59,
+                  "endColumn": 51,
+                  "charOffset": 1278,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "strlen(\"heap\")",
+                    "rendered": {
+                      "text": "strlen(\"heap\")",
+                      "markdown": "`strlen(\"heap\")`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_get_nb.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1278,
+                        "charLength": 14
+                      },
+                      "insertedContent": {
+                        "text": "strlen_s(\"heap\", <size of \"heap\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_get_nb.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1278,
+                        "charLength": 14
+                      },
+                      "insertedContent": {
+                        "text": "strnlen(\"heap\", <size of \"heap\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-31be831f-4a16-4c58-bfae-3a5060d2d8ed",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (strlen)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "openshmem/osu_oshm_put_overlap.c"
+                },
+                "region": {
+                  "startLine": 111,
+                  "startColumn": 46,
+                  "endLine": 111,
+                  "endColumn": 62,
+                  "charOffset": 2386,
+                  "charLength": 16,
+                  "snippet": {
+                    "text": "strlen(\"global\")",
+                    "rendered": {
+                      "text": "strlen(\"global\")",
+                      "markdown": "`strlen(\"global\")`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_put_overlap.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2386,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "strlen_s(\"global\", <size of \"global\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_put_overlap.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2386,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "strnlen(\"global\", <size of \"global\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-d0a1f3b7-4f80-4732-8249-0638849745e2",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (strlen)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "openshmem/osu_oshm_put_overlap.c"
+                },
+                "region": {
+                  "startLine": 109,
+                  "startColumn": 37,
+                  "endLine": 109,
+                  "endColumn": 51,
+                  "charOffset": 2300,
+                  "charLength": 14,
+                  "snippet": {
+                    "text": "strlen(\"heap\")",
+                    "rendered": {
+                      "text": "strlen(\"heap\")",
+                      "markdown": "`strlen(\"heap\")`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_put_overlap.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2300,
+                        "charLength": 14
+                      },
+                      "insertedContent": {
+                        "text": "strlen_s(\"heap\", <size of \"heap\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_put_overlap.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2300,
+                        "charLength": 14
+                      },
+                      "insertedContent": {
+                        "text": "strnlen(\"heap\", <size of \"heap\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-a0d6f842-e6a1-4955-a649-bbcb93db58a1",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (strlen)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "openshmem/osu_oshm_get.c"
+                },
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 46,
+                  "endLine": 61,
+                  "endColumn": 62,
+                  "charOffset": 1364,
+                  "charLength": 16,
+                  "snippet": {
+                    "text": "strlen(\"global\")",
+                    "rendered": {
+                      "text": "strlen(\"global\")",
+                      "markdown": "`strlen(\"global\")`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_get.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1364,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "strlen_s(\"global\", <size of \"global\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "If a string is missing a null terminator, strlen will read past the end of the buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "openshmem/osu_oshm_get.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 1364,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "strnlen(\"global\", <size of \"global\">)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        }
+      ],
+      "newlineSequences": [
+        "\r\n",
+        "\n"
+      ]
+    }
+  ]
+}
